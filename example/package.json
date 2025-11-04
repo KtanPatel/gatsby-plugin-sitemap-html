@@ -24,8 +24,10 @@
   },
   "overrides": {
     "graphql-http": "1.19.0",
-    "gatsby>graphql-http": "1.19.0",
-    "gatsby>rxjs": "6.6.7"
+    "gatsby": {
+      "graphql-http": "1.19.0",
+      "rxjs": "6.6.7"
+    }
   },
   "repository": {
     "type": "git",
