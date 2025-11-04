@@ -12,8 +12,22 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
   const publicDir = program.directory
     ? path.join(program.directory, "public")
     : "public";
-  const xslTemplate =
-    pluginOptions.xslTemplate || path.join(__dirname, "templates/sitemap.xsl");
+  let xslTemplate = pluginOptions.xslTemplate;
+  if (!xslTemplate) {
+    // prefer bundled templates/ path, but fall back to src/templates/ for local/dev installs
+    const candidates = [
+      path.join(__dirname, "templates", "sitemap.xsl"),
+      path.join(__dirname, "src", "templates", "sitemap.xsl"),
+    ];
+    xslTemplate = candidates.find((p) => fs.pathExistsSync(p));
+    if (!xslTemplate) {
+      throw new Error(
+        `gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package. Searched: ${candidates.join(
+          ", "
+        )}`
+      );
+    }
+  }
 
   // Copy XSL template to public directory
   await fs.copy(xslTemplate, path.join(publicDir, "sitemap.xsl"));
