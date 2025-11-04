@@ -22,7 +22,7 @@ describe("gatsby-plugin-sitemap-html", () => {
     await onPostBuild({
       store: mockStore
     }, {});
-  expect(fs.copy).toHaveBeenCalledWith(expect.stringMatching(/templates[\/\\]sitemap\.xsl/), path.join("/mock/root/public", "sitemap.xsl"));
+    expect(fs.copy).toHaveBeenCalledWith(expect.stringMatching(/templates[\/\\]sitemap\.xsl/), path.join("/mock/root/public", "sitemap.xsl"));
   });
   test("injects XSL reference into sitemap.xml", async () => {
     fs.pathExists.mockResolvedValue(true);

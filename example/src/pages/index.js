@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const IndexPage = () => {
+const HomePage = () => {
   return (
     <main>
       <h1>Example Gatsby Site</h1>
@@ -10,4 +10,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default HomePage;
