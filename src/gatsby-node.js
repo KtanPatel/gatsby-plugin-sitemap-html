@@ -1,3 +1,9 @@
+/**
+ * gatsby-plugin-sitemap-html
+ * Copyright (c) 2025 Ketan Patel
+ * MIT License
+ */
+
 const fs = require("fs-extra");
 const path = require("path");
 
