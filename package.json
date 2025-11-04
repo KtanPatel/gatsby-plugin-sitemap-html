@@ -43,6 +43,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/KtanPatel/gatsby-plugin-sitemap-html"
+    "url": "git+https://github.com/KtanPatel/gatsby-plugin-sitemap-html.git"
   }
 }
