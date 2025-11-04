@@ -23,7 +23,7 @@ describe("gatsby-plugin-sitemap-html", () => {
     await onPostBuild({ store: mockStore }, {});
 
     expect(fs.copy).toHaveBeenCalledWith(
-      expect.stringContaining("templates/sitemap.xsl"),
+      expect.stringMatching(/templates[\/\\]sitemap\.xsl/),
       path.join("/mock/root/public", "sitemap.xsl")
     );
   });
