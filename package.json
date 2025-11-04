@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-sitemap-html",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gatsby plugin that extends gatsby-plugin-sitemap to generate HTML-styled sitemaps using XSL",
   "main": "gatsby-node.js",
   "scripts": {
