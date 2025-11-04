@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+.cache
+public
+.env
+coverage/
+/index.js
+/gatsby-node.js
