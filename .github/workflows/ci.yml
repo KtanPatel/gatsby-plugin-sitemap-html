@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [20.x, 22.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -20,6 +20,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm test
-      - run: cd example && npm install && npm run build
+          cache: 'npm'
+          
+      # Install dependencies in the root project
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm run build
+          
+      # Run tests
+      - name: Run tests
+        run: npm test
+        
+      # Install and build example
+      - name: Build example
+        run: |
+          cd example
+          npm ci
+          npm run build
