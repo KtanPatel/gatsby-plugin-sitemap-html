@@ -19,6 +19,9 @@
     "gatsby-plugin-sitemap": "^6.15.0",
     "gatsby-plugin-sitemap-html": "file:.."
   },
+  "devDependencies": {
+    "gatsby-plugin-compile-es6-packages": "^2.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
