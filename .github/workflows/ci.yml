@@ -38,3 +38,8 @@ jobs:
       # want the example built in CI again, consider one of the long-term fixes
       # documented in the repo: pin problematic transitive dependencies, use
       # npm/yarn resolutions/overrides, or use a plugin to transpile those modules.
+      - name: Build example
+        run: |
+          cd example
+          npm ci
+          npm run build

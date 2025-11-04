@@ -25,5 +25,8 @@
     "graphql-http": "1.19.0",
     "@graphql-codegen/plugin-helpers": "4.1.0",
     "@graphql-tools/utils": "^10.0.8"
+  },
+  "devDependencies": {
+    "gatsby-plugin-compile-es6-packages": "^2.0.0"
   }
 }
