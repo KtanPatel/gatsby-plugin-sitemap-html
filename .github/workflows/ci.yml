@@ -20,14 +20,25 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
-          
+
+      # If you want pnpm caching in actions a separate cache action can be used
+      # or remove `run_install: false` to let pnpm/action-setup install and run
+      # `pnpm install` automatically. We keep an explicit install step below.
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       # Install dependencies in the root project
       - name: Install dependencies
         run: |
