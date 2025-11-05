@@ -1,0 +1,9 @@
+node_modules
+coverage
+public
+.cache
+gatsby-node.js
+__tests__/gatsby-node.test.js
+*.log
+package-lock.json
+pnpm-lock.yaml
