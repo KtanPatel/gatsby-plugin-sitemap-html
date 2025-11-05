@@ -1,8 +1,0 @@
-node_modules
-coverage
-public
-.cache
-gatsby-node.js
-__tests__/gatsby-node.test.js
-example
-scripts
