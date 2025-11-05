@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "babel src -d .",
-    "prepare": "cross-env NODE_ENV=production npm run build && node ./scripts/copy-templates.js"
+    "prepare": "cross-env NODE_ENV=production npm run build"
   },
   "keywords": [
     "gatsby",
@@ -36,7 +36,6 @@
   },
   "files": [
     "gatsby-node.js",
-    "src/templates/sitemap.xsl",
     "templates/sitemap.xsl",
     "CHANGELOG.md",
     "LICENSE",

@@ -26,3 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI
 
 - Use pnpm in CI and cache the pnpm store to speed up installs.
+
+## [1.0.2] - 2025-11-05
+
+### Fixed
+
+- chore(release): include templates on prepare
+- chore(release): add temp changelog helper and example assets for release
+
+## [1.0.3] - 2025-11-05
+
+### Fixed
+
+- chore(release): optimised xsl file path. removed duplication
