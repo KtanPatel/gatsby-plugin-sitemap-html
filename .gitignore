@@ -5,6 +5,7 @@ node_modules/
 public
 .env
 coverage/
+.nyc_output/
 /index.js
 /gatsby-node.js
 # local release helper (should not be committed)

@@ -1,0 +1,41 @@
+# Source files (built files are included)
+src/
+
+# Tests
+__tests__/
+coverage/
+*.test.js
+
+# Development files
+.husky/
+.github/
+.vscode/
+example/
+scripts/
+docs/
+
+# Config files
+.eslintrc.js
+.eslintignore
+.prettierrc.js
+.prettierignore
+.gitignore
+.npmignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Misc
+.cache/
+node_modules/
