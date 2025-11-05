@@ -61,4 +61,12 @@ describe('gatsby-plugin-sitemap-html', () => {
       path.join('/mock/root/public', 'sitemap.xsl')
     );
   });
+
+  test('throws error when XSL template not found', async () => {
+    fs.pathExistsSync = jest.fn().mockReturnValue(false);
+
+    await expect(onPostBuild({ store: mockStore }, {})).rejects.toThrow(
+      'gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package'
+    );
+  });
 });
