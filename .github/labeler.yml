@@ -1,0 +1,19 @@
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: ['docs/**', '*.md', 'README.md']
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: ['package.json', 'pnpm-lock.yaml']
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file: ['**/__tests__/**', '**/*.test.js']
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/**']
+
+source:
+  - changed-files:
+    - any-glob-to-any-file: ['src/**/*.js']

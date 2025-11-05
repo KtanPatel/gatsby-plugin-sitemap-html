@@ -44,6 +44,14 @@ jobs:
         run: |
           pnpm install
           pnpm run build
+      
+      # Check code formatting
+      - name: Check formatting
+        run: pnpm run format:check
+      
+      # Lint code
+      - name: Lint code
+        run: pnpm run lint
           
       # Run tests
       - name: Run tests
