@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-01-15
+
+### Changed
+
+- Update all dependencies to latest versions
+- Migrate ESLint to v9 with flat config format
+- Update cross-env to v10.1.0
+- Update eslint-config-prettier to v10.1.8
+- Update eslint-plugin-jest to v29.0.1
+- Update jest to v30.2.0
+- Update lint-staged to v16.2.6
+- Update actions/labeler to v6
+
 ## [1.1.2] - 2025-01-15
 
 ### Changed
