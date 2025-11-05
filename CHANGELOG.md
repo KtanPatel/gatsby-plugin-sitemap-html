@@ -16,3 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated XSL injection into sitemap.xml
 - Full test coverage
 - Example site demonstrating usage
+
+## [1.0.1] - 2025-11-05
+
+### Fixed
+
+- Fix ENOENT in onPostBuild when installed via pnpm or using a local `file:..` dependency: plugin now searches both `templates/sitemap.xsl` and `src/templates/sitemap.xsl` and copies the available template into the site's `public/` directory. This prevents build failures in environments where the package layout differs (pnpm, local installs).
+
+### CI
+
+- Use pnpm in CI and cache the pnpm store to speed up installs.

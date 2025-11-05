@@ -7,3 +7,5 @@ public
 coverage/
 /index.js
 /gatsby-node.js
+# local release helper (should not be committed)
+scripts/release-local.js
