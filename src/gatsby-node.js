@@ -32,16 +32,27 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
   // Copy XSL template to public directory
   await fs.copy(xslTemplate, path.join(publicDir, "sitemap.xsl"));
 
-  // Read sitemap.xml and inject XSL reference
-  const sitemapPath = path.join(publicDir, "sitemap.xml");
-  if (await fs.pathExists(sitemapPath)) {
-    let sitemapContent = await fs.readFile(sitemapPath, "utf8");
-    if (!sitemapContent.includes("<?xml-stylesheet")) {
-      sitemapContent = sitemapContent.replace(
+  // Inject XSL reference into all sitemap files
+  const sitemapFiles = (await fs.readdir(publicDir)).filter(
+    (f) => f === "sitemap-index.xml" || /^sitemap-\d+\.xml$/.test(f)
+  );
+
+  for (const file of sitemapFiles) {
+    const filePath = path.join(publicDir, file);
+    let content = await fs.readFile(filePath, "utf8");
+    if (!content.includes("<?xml-stylesheet")) {
+      content = content.replace(
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>'
       );
-      await fs.writeFile(sitemapPath, sitemapContent);
+      await fs.writeFile(filePath, content);
     }
+  }
+
+  // Rename sitemap-index.xml to sitemap.xml
+  const sitemapIndexPath = path.join(publicDir, "sitemap-index.xml");
+  const sitemapPath = path.join(publicDir, "sitemap.xml");
+  if (await fs.pathExists(sitemapIndexPath)) {
+    await fs.move(sitemapIndexPath, sitemapPath, { overwrite: true });
   }
 };
