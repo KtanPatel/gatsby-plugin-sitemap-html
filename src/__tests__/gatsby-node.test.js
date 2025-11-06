@@ -70,4 +70,33 @@ describe('gatsby-plugin-sitemap-html', () => {
       'gatsby-plugin-sitemap-html: cannot find sitemap.xsl at'
     );
   });
+
+  test('adds lastmod to sitemap entries without it', async () => {
+    fs.readdir.mockResolvedValue(['sitemap-index.xml']);
+    fs.pathExists.mockResolvedValue(true);
+    fs.readFile.mockResolvedValue(
+      '<?xml version="1.0" encoding="UTF-8"?><sitemapindex><sitemap><loc>https://example.com/sitemap-0.xml</loc></sitemap></sitemapindex>'
+    );
+
+    await onPostBuild({ store: mockStore }, {});
+
+    expect(fs.writeFile).toHaveBeenCalledWith(
+      path.join('/mock/root/public', 'sitemap-index.xml'),
+      expect.stringMatching(/<lastmod>.*<\/lastmod>/)
+    );
+  });
+
+  test('adds lastmod to URL entries without it', async () => {
+    fs.readdir.mockResolvedValue(['sitemap-0.xml']);
+    fs.readFile.mockResolvedValue(
+      '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>https://example.com/page</loc></url></urlset>'
+    );
+
+    await onPostBuild({ store: mockStore }, {});
+
+    expect(fs.writeFile).toHaveBeenCalledWith(
+      path.join('/mock/root/public', 'sitemap-0.xml'),
+      expect.stringMatching(/<lastmod>.*<\/lastmod>/)
+    );
+  });
 });
