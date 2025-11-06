@@ -59,7 +59,6 @@
             <body>
                 <div id="content">
                     <h1>XML Sitemap</h1>
-                    
                     <xsl:if test="count(sitemap:sitemapindex/sitemap:sitemap) &gt; 0">
                         <table id="sitemap" cellpadding="3">
                             <thead>
@@ -69,27 +68,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <xsl:for-each select="sitemap:sitemapindex/sitemap:sitemap">
-                                <xsl:variable name="sitemapURL">
-                                    <xsl:value-of select="sitemap:loc"/>
-                                </xsl:variable>
-                                <tr>
-                                    <td>
-                                        <a href="{$sitemapURL}"><xsl:value-of select="sitemap:loc"/></a>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)))"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
+                                <xsl:for-each select="sitemap:sitemapindex/sitemap:sitemap">
+                                    <xsl:variable name="sitemapURL">
+                                        <xsl:value-of select="sitemap:loc"/>
+                                    </xsl:variable>
+                                    <tr>
+                                        <td>
+                                            <a href="{$sitemapURL}">
+                                                <xsl:value-of select="sitemap:loc"/>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <xsl:choose>
+                                                <xsl:when test="sitemap:lastmod">
+                                                    <xsl:value-of select="concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)))"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>N/A</xsl:otherwise>
+                                            </xsl:choose>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
                             </tbody>
                         </table>
                     </xsl:if>
                     <xsl:if test="count(sitemap:sitemapindex/sitemap:sitemap) &lt; 1">
+                        <p class="desc">
+                            <a href="/sitemap.xml" class="back-link">&#8592; Back to index</a>
+                        </p>
                         <table id="sitemap" cellpadding="3">
                             <thead>
                                 <tr>
-                                    <th width="70%">URL (<xsl:value-of select="count(sitemap:urlset/sitemap:url)"/> total)</th>
+                                    <th width="70%">URL (
+                                        <xsl:value-of select="count(sitemap:urlset/sitemap:url)"/> total)
+                                    </th>
                                     <th width="15%">Images</th>
                                     <th title="Last Modification Time" width="15%">Last Modified</th>
                                 </tr>
@@ -111,12 +122,20 @@
                                             <xsl:value-of select="count(image:image)"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)))"/>
+                                            <xsl:choose>
+                                                <xsl:when test="sitemap:lastmod">
+                                                    <xsl:value-of select="concat(substring(sitemap:lastmod,0,11),concat(' ', substring(sitemap:lastmod,12,5)))"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>N/A</xsl:otherwise>
+                                            </xsl:choose>
                                         </td>
                                     </tr>
                                 </xsl:for-each>
                             </tbody>
                         </table>
+                        <p class="desc">
+                            <a href="/sitemap.xml" class="back-link">&#8592; Back to index</a>
+                        </p>
                     </xsl:if>
                 </div>
             </body>

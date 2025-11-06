@@ -2938,6 +2938,7 @@ packages:
 
   gatsby-plugin-sitemap-html@file:..:
     resolution: {directory: .., type: directory}
+    engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     peerDependencies:
       gatsby: ^5.12.0
 

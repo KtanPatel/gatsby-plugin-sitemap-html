@@ -9,7 +9,7 @@
  */
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://www.example.com`,
+    siteUrl: `http://localhost:9000`,
     title: `Example Gatsby Site`,
   },
   plugins: [
@@ -36,4 +36,4 @@ module.exports = {
       },
     },
   ],
-}
+};

@@ -15,15 +15,10 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
     : path.join('public', output);
   let xslTemplate = pluginOptions.xslTemplate;
   if (!xslTemplate) {
-    // prefer bundled templates/ path, but fall back to src/templates/ for local/dev installs
-    const candidates = [
-      path.join(__dirname, 'templates', 'sitemap.xsl'),
-      path.join(__dirname, 'src', 'templates', 'sitemap.xsl'),
-    ];
-    xslTemplate = candidates.find((p) => fs.pathExistsSync(p));
-    if (!xslTemplate) {
+    xslTemplate = path.join(__dirname, 'templates', 'sitemap.xsl');
+    if (!fs.pathExistsSync(xslTemplate)) {
       throw new Error(
-        `gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package. Searched: ${candidates.join(', ')}`
+        `gatsby-plugin-sitemap-html: cannot find sitemap.xsl at ${xslTemplate}`
       );
     }
   }
@@ -36,16 +31,37 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
     (f) => f === 'sitemap-index.xml' || /^sitemap-\d+\.xml$/.test(f)
   );
 
+  const timestamp = new Date().toISOString();
+
   for (const file of sitemapFiles) {
     const filePath = path.join(publicDir, file);
     let content = await fs.readFile(filePath, 'utf8');
+
+    // Inject XSL stylesheet reference
     if (!content.includes('<?xml-stylesheet')) {
       content = content.replace(
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>'
       );
-      await fs.writeFile(filePath, content);
     }
+
+    // Add lastmod timestamp to sitemap entries without it
+    if (content.includes('<sitemapindex')) {
+      content = content.replace(
+        /<sitemap>(?![\s\S]*?<lastmod>)([\s\S]*?)<\/sitemap>/g,
+        `<sitemap>$1<lastmod>${timestamp}</lastmod></sitemap>`
+      );
+    }
+
+    // Add lastmod timestamp to URL entries without it
+    if (content.includes('<urlset')) {
+      content = content.replace(
+        /<url>(?![\s\S]*?<lastmod>)([\s\S]*?)<\/url>/g,
+        `<url>$1<lastmod>${timestamp}</lastmod></url>`
+      );
+    }
+
+    await fs.writeFile(filePath, content);
   }
 
   // Rename sitemap-index.xml to sitemap.xml

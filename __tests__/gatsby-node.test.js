@@ -13,6 +13,7 @@ describe('gatsby-plugin-sitemap-html', () => {
   };
   beforeEach(() => {
     fs.existsSync = jest.fn();
+    fs.pathExistsSync = jest.fn().mockReturnValue(true);
     fs.copy = jest.fn();
     fs.pathExists = jest.fn();
     fs.readFile = jest.fn();
@@ -48,5 +49,11 @@ describe('gatsby-plugin-sitemap-html', () => {
       xslTemplate: customPath
     });
     expect(fs.copy).toHaveBeenCalledWith(customPath, path.join('/mock/root/public', 'sitemap.xsl'));
+  });
+  test('throws error when XSL template not found', async () => {
+    fs.pathExistsSync = jest.fn().mockReturnValue(false);
+    await expect(onPostBuild({
+      store: mockStore
+    }, {})).rejects.toThrow('gatsby-plugin-sitemap-html: cannot find sitemap.xsl at');
   });
 });

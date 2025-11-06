@@ -5,7 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.3] - 2025-01-15
+## [1.2.0] - 2025-11-06
+
+### Changed
+
+- Simplified XSL template structure to single source at `templates/sitemap.xsl`
+- Removed duplicate `src/templates/` directory to reduce package complexity
+- Updated error messages for better clarity
+- Enhanced test coverage with proper mocking
+
+## [1.1.3] - 2025-11-05
 
 ### Changed
 
@@ -18,14 +27,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update lint-staged to v16.2.6
 - Update actions/labeler to v6
 
-## [1.1.2] - 2025-01-15
+## [1.1.2] - 2025-11-05
 
 ### Changed
 
 - Update GitHub Actions to latest versions (v5 for checkout/setup-node, v4 for pnpm/codecov)
 - Update pnpm to v9
 
-## [1.1.1] - 2025-01-15
+## [1.1.1] - 2025-11-05
 
 ### Added
 
@@ -50,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Package optimization with .npmignore to exclude dev files
 
-## [1.1.0] - 2025-01-15
+## [1.1.0] - 2025-11-05
 
 ### Changed
 
