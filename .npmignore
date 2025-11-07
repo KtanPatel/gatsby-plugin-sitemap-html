@@ -15,12 +15,21 @@ scripts/
 docs/
 
 # Config files
+eslint.config.js
 .eslintrc.js
 .eslintignore
+jest.config.js
 .prettierrc.js
 .prettierignore
 .gitignore
 .npmignore
+package-lock.json
+
+# Community files (available on GitHub)
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+SECURITY.md
 
 # Logs
 *.log

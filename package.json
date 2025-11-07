@@ -59,7 +59,6 @@
     "gatsby-node.js",
     "gatsby-node.d.ts",
     "templates/sitemap.xsl",
-    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
