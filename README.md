@@ -1,7 +1,7 @@
 # gatsby-plugin-sitemap-html
 
 [![npm version](https://badge.fury.io/js/gatsby-plugin-sitemap-html.svg)](https://www.npmjs.com/package/gatsby-plugin-sitemap-html)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/KtanPatel/gatsby-plugin-sitemap-html/actions/workflows/ci.yml/badge.svg)](https://github.com/KtanPatel/gatsby-plugin-sitemap-html/actions)
 [![codecov](https://codecov.io/gh/KtanPatel/gatsby-plugin-sitemap-html/branch/main/graph/badge.svg)](https://codecov.io/gh/KtanPatel/gatsby-plugin-sitemap-html)
 
