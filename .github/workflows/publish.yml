@@ -33,7 +33,7 @@ jobs:
         run: pnpm run build
 
       - name: Minify gatsby-node.js
-        run: npx --yes terser gatsby-node.js -c -m -o gatsby-node.js
+        run: pnpm dlx terser gatsby-node.js -c -m -o gatsby-node.js
 
       - name: Run tests
         run: pnpm test
