@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.1] - 2025-11-07
+## [1.2.2] - 2025-01-16
+
+### Changed
+
+- Minify gatsby-node.js in CI for smaller package size
+- Exclude community files from npm package (CHANGELOG, CODE_OF_CONDUCT, CONTRIBUTING, SECURITY)
+- Exclude config files from npm package (eslint, jest, prettier configs)
+
+## [1.2.1] - 2025-01-16
 
 ### Changed
 
@@ -74,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Process all sitemap files (sitemap-index.xml and sitemap-*.xml) instead of just sitemap.xml
+- Process all sitemap files (sitemap-index.xml and sitemap-\*.xml) instead of just sitemap.xml
 - Automatically rename sitemap-index.xml to sitemap.xml for standard naming convention
 - Optimized package size by removing duplicate XSL template file
 - Removed unnecessary copy-templates.js script from build process
