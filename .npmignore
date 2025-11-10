@@ -23,7 +23,7 @@ jest.config.js
 .prettierignore
 .gitignore
 .npmignore
-package-lock.json
+pnpm-lock.yaml
 
 # Community files (available on GitHub)
 CHANGELOG.md

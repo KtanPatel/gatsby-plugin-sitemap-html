@@ -19,6 +19,12 @@ A Gatsby plugin that extends `gatsby-plugin-sitemap` to generate **human-readabl
 ## 📦 Installation
 
 ```bash
+pnpm add gatsby-plugin-sitemap gatsby-plugin-sitemap-html
+```
+
+Or with npm:
+
+```bash
 npm install gatsby-plugin-sitemap gatsby-plugin-sitemap-html
 ```
 
@@ -26,12 +32,6 @@ Or with yarn:
 
 ```bash
 yarn add gatsby-plugin-sitemap gatsby-plugin-sitemap-html
-```
-
-Or with pnpm:
-
-```bash
-pnpm add gatsby-plugin-sitemap gatsby-plugin-sitemap-html
 ```
 
 ## 🚀 Quick Start

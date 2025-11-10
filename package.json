@@ -12,7 +12,7 @@
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.js\"",
     "format:check": "prettier --check \"src/**/*.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build && husky install"
+    "prepare": "cross-env NODE_ENV=production pnpm run build && husky install"
   },
   "keywords": [
     "gatsby",
@@ -70,9 +70,10 @@
   "bugs": {
     "url": "https://github.com/KtanPatel/gatsby-plugin-sitemap-html/issues"
   },
+  "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "pnpm": ">=9.0.0"
   },
   "funding": {
     "type": "github",
