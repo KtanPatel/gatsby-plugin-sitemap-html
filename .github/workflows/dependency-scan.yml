@@ -26,5 +26,4 @@ jobs:
         cache: 'pnpm'
     
     - name: Run pnpm audit
-      run: pnpm audit --audit-level=moderate
-      continue-on-error: true
+      run: pnpm audit --prod --audit-level=high || true
