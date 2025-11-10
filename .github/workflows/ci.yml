@@ -23,9 +23,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
 
       # If you want pnpm caching in actions a separate cache action can be used
       # or remove `run_install: false` to let pnpm/action-setup install and run
