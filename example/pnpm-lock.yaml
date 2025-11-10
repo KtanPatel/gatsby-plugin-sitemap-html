@@ -16,7 +16,7 @@ importers:
         version: 6.15.0(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gatsby-plugin-sitemap-html:
         specifier: file:..
-        version: file:..(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: file:..(gatsby-plugin-sitemap@6.15.0(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2941,6 +2941,7 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     peerDependencies:
       gatsby: ^5.12.0
+      gatsby-plugin-sitemap: ^6.0.0
 
   gatsby-plugin-sitemap@6.15.0:
     resolution: {integrity: sha512-T4gchKmWh9n3ld0AylXfyfr498IAwMawIHM9U4oC8twxpOb6AOtmitba3UvSykUK1/FBNEriJFVi+slQylUZvg==}
@@ -9248,14 +9249,11 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  gatsby-plugin-sitemap-html@file:..(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  gatsby-plugin-sitemap-html@file:..(gatsby-plugin-sitemap@6.15.0(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3)):
     dependencies:
       fs-extra: 11.3.2
       gatsby: 5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3)
       gatsby-plugin-sitemap: 6.15.0(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - react
-      - react-dom
 
   gatsby-plugin-sitemap@6.15.0(gatsby@5.15.0(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@0.21.3)(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
