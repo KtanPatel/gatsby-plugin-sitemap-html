@@ -39,6 +39,58 @@ module.exports = {
 };
 ```
 
+### Custom Output Directory
+
+```js
+// gatsby-config.js
+module.exports = {
+  siteMetadata: {
+    siteUrl: 'https://www.example.com',
+  },
+  plugins: [
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        output: '/sitemaps',
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        output: '/sitemaps', // Must match gatsby-plugin-sitemap
+      },
+    },
+  ],
+};
+```
+
+### Custom Output with Custom Template
+
+```js
+// gatsby-config.js
+module.exports = {
+  siteMetadata: {
+    siteUrl: 'https://www.example.com',
+  },
+  plugins: [
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        output: '/seo',
+        excludes: ['/dev-404-page', '/404', '/404.html'],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        output: '/seo',
+        xslTemplate: `${__dirname}/src/templates/custom-sitemap.xsl`,
+      },
+    },
+  ],
+};
+```
+
 ## Advanced Configurations
 
 ### Multi-language Site
