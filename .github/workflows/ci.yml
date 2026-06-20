@@ -41,6 +41,19 @@ jobs:
         run: |
           pnpm install
           pnpm run build
+
+      # Check for security vulnerabilities in dependencies
+      - name: Run npm audit
+        run: pnpm audit --audit-level=moderate
+      
+      # Scan for known security issues
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+        continue-on-error: true
       
       # Check code formatting
       - name: Check formatting
