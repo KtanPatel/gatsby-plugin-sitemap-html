@@ -51,24 +51,16 @@
       "uuid": ">=11.1.1",
       "immutable": ">=3.8.4",
       "webpack-dev-middleware": ">=7.4.6",
-      "@babel/core": ">=7.29.6",
       "@graphql-tools/utils": ">=12.0.1",
-      "@parcel/reporter-dev-server": ">=2.16.4",
-      "glob": ">=14.0.2",
-      "minimatch": ">=11.0.1",
-      "brace-expansion": ">=2.1.7",
-      "picomatch": ">=4.0.4",
       "flatted": ">=3.4.2",
       "js-yaml": ">=4.3.2",
-      "ajv": ">=8.18.0",
       "fast-uri": ">=3.1.9",
       "lodash": ">=4.18.0",
       "browserslist": ">=4.28.7",
       "@humanfs/node": ">=0.16.8",
       "baseline-browser-mapping": ">=2.11.0",
       "yaml": ">=2.8.3",
-      "tmp": ">=0.2.6",
-      "file-type": ">=21.3.1"
+      "tmp": ">=0.2.6"
     }
   },
   "repository": {
