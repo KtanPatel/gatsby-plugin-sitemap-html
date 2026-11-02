@@ -15,21 +15,21 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       # If you want pnpm caching in actions a separate cache action can be used
       # or remove `run_install: false` to let pnpm/action-setup install and run
       # `pnpm install` automatically. We keep an explicit install step below.
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -41,6 +41,19 @@ jobs:
         run: |
           pnpm install
           pnpm run build
+
+      # Check for security vulnerabilities in dependencies
+      - name: Run npm audit
+        run: pnpm audit --audit-level=moderate
+      
+      # Scan for known security issues
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+        continue-on-error: true
       
       # Check code formatting
       - name: Check formatting
