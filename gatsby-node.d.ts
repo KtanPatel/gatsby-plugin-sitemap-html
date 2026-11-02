@@ -25,6 +25,18 @@ export interface PluginOptions {
    * ```
    */
   output?: string;
+
+  /**
+   * Custom filename for the main sitemap file (renamed from sitemap-index.xml).
+   * @default 'sitemap.xml'
+   * @example
+   * ```js
+   * {
+   *   sitemapFilename: 'custom-sitemap.xml'
+   * }
+   * ```
+   */
+  sitemapFilename?: string;
 }
 
 /**

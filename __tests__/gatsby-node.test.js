@@ -73,4 +73,41 @@ describe('gatsby-plugin-sitemap-html', () => {
     }, {});
     expect(fs.writeFile).toHaveBeenCalledWith(path.join('/mock/root/public', 'sitemap-0.xml'), expect.stringMatching(/<lastmod>.*<\/lastmod>/));
   });
+  test('renames sitemap-index.xml to sitemap.xml by default', async () => {
+    fs.readdir.mockResolvedValue(['sitemap-index.xml']);
+    fs.pathExists.mockResolvedValue(true);
+    fs.readFile.mockResolvedValue('<?xml version="1.0" encoding="UTF-8"?>');
+    await onPostBuild({
+      store: mockStore
+    }, {});
+    expect(fs.move).toHaveBeenCalledWith(path.join('/mock/root/public', 'sitemap-index.xml'), path.join('/mock/root/public', 'sitemap.xml'), {
+      overwrite: true
+    });
+  });
+  test('renames sitemap-index.xml to custom filename', async () => {
+    fs.readdir.mockResolvedValue(['sitemap-index.xml']);
+    fs.pathExists.mockResolvedValue(true);
+    fs.readFile.mockResolvedValue('<?xml version="1.0" encoding="UTF-8"?>');
+    await onPostBuild({
+      store: mockStore
+    }, {
+      sitemapFilename: 'custom-sitemap.xml'
+    });
+    expect(fs.move).toHaveBeenCalledWith(path.join('/mock/root/public', 'sitemap-index.xml'), path.join('/mock/root/public', 'custom-sitemap.xml'), {
+      overwrite: true
+    });
+  });
+  test('keeps original filename when sitemapFilename is sitemap-index.xml', async () => {
+    fs.readdir.mockResolvedValue(['sitemap-index.xml']);
+    fs.pathExists.mockResolvedValue(true);
+    fs.readFile.mockResolvedValue('<?xml version="1.0" encoding="UTF-8"?>');
+    await onPostBuild({
+      store: mockStore
+    }, {
+      sitemapFilename: 'sitemap-index.xml'
+    });
+    expect(fs.move).toHaveBeenCalledWith(path.join('/mock/root/public', 'sitemap-index.xml'), path.join('/mock/root/public', 'sitemap-index.xml'), {
+      overwrite: true
+    });
+  });
 });

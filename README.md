@@ -92,12 +92,29 @@ module.exports = {
 };
 ```
 
+### Custom Sitemap Filename
+
+```js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        sitemapFilename: 'custom-sitemap.xml',
+      },
+    },
+  ],
+};
+```
+
 ### Options
 
-| Option      | Type   | Default           | Description                                                                 |
-| ----------- | ------ | ----------------- | --------------------------------------------------------------------------- |
-| xslTemplate | string | built-in template | Path to a custom XSL template file (optional)                              |
-| output      | string | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)   |
+| Option           | Type   | Default           | Description                                                                 | 
+| ---------------- | ------ | ----------------- | --------------------------------------------------------------------------- |
+| xslTemplate      | string | built-in template | Path to a custom XSL template file (optional)                              |
+| output           | string | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)   |
+| sitemapFilename  | string | `sitemap.xml`     | Custom filename for the main sitemap file (renamed from sitemap-index.xml) |
 
 ## 📖 How It Works
 
@@ -105,7 +122,7 @@ module.exports = {
 2. This plugin automatically:
    - Copies the XSL stylesheet to your public directory
    - Injects XSL references into all sitemap files
-   - Renames `sitemap-index.xml` to `sitemap.xml` for standard naming
+   - Renames `sitemap-index.xml` to `sitemap.xml` (or custom filename via `sitemapFilename` option) for standard naming
 3. When users visit your sitemap in a browser, they see a styled HTML page
 4. Search engines still see the standard XML structure
 
