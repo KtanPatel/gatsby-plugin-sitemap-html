@@ -18,6 +18,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap-html`,
       options: {
         htmlSitemap: true,
+        xsl: false,
         // htmlSitemapPath: '/sitemap', // default
         // xsl: true,                  // default
       },
