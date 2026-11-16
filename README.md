@@ -5,7 +5,7 @@
 [![CI](https://github.com/KtanPatel/gatsby-plugin-sitemap-html/actions/workflows/ci.yml/badge.svg)](https://github.com/KtanPatel/gatsby-plugin-sitemap-html/actions)
 [![codecov](https://codecov.io/gh/KtanPatel/gatsby-plugin-sitemap-html/branch/main/graph/badge.svg)](https://codecov.io/gh/KtanPatel/gatsby-plugin-sitemap-html)
 
-A Gatsby plugin that extends `gatsby-plugin-sitemap` to generate **human-readable, HTML-styled sitemaps** using XSL. Transform your XML sitemaps into beautiful, browser-friendly pages that both users and search engines can appreciate.
+A Gatsby plugin that extends `gatsby-plugin-sitemap` to generate **human-readable, HTML-styled sitemaps**. Supports XSL-based styling and a pure HTML sitemap page — keeping XML clean for search engines while giving users a beautiful browser experience.
 
 ## ✨ Features
 
@@ -15,6 +15,7 @@ A Gatsby plugin that extends `gatsby-plugin-sitemap` to generate **human-readabl
 - 📦 **Lightweight** - Minimal dependencies
 - 🚀 **SEO-friendly** - Maintains XML structure for search engines
 - 🔄 **Automatic processing** - Handles sitemap index and all sitemap files
+- 📄 **HTML sitemap page** - Optionally generate a pure HTML sitemap at `/sitemap` (no XSL required)
 
 ## 📦 Installation
 
@@ -71,6 +72,45 @@ module.exports = {
 };
 ```
 
+### Pure XML + HTML Sitemap Page (Recommended)
+
+Chrome is deprecating XSLT support. To future-proof your sitemap, disable XSL and generate a standalone HTML sitemap page instead:
+
+```js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,          // pure XML for search engines
+        htmlSitemap: true,   // generate HTML page at /sitemap
+      },
+    },
+  ],
+};
+```
+
+Visit `/sitemap.xml` for the raw XML and `/sitemap` for the styled HTML page.
+
+### HTML Sitemap with Custom Path
+
+```js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,
+        htmlSitemap: true,
+        htmlSitemapPath: '/sitemap-html',
+      },
+    },
+  ],
+};
+```
+
 ### Custom Output Path
 
 ```js
@@ -110,27 +150,43 @@ module.exports = {
 
 ### Options
 
-| Option           | Type   | Default           | Description                                                                 | 
-| ---------------- | ------ | ----------------- | --------------------------------------------------------------------------- |
-| xslTemplate      | string | built-in template | Path to a custom XSL template file (optional)                              |
-| output           | string | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)   |
-| sitemapFilename  | string | `sitemap.xml`     | Custom filename for the main sitemap file (renamed from sitemap-index.xml) |
+| Option          | Type    | Default           | Description                                                                 |
+| --------------- | ------- | ----------------- | --------------------------------------------------------------------------- |
+| xsl             | boolean | `true`            | Inject XSL stylesheet reference into XML sitemaps. Set `false` for pure XML |
+| xslTemplate     | string  | built-in template | Path to a custom XSL template file. Only used when `xsl: true`             |
+| htmlSitemap     | boolean | `false`           | Generate a styled HTML sitemap page (no XSL, works in all browsers)        |
+| htmlSitemapPath | string  | `/sitemap`        | Path where the HTML sitemap page is generated. Only used when `htmlSitemap: true` |
+| output          | string  | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)   |
+| sitemapFilename | string  | `sitemap.xml`     | Custom filename for the main sitemap file (renamed from sitemap-index.xml) |
 
 ## 📖 How It Works
 
 1. `gatsby-plugin-sitemap` generates your sitemap files (`sitemap-index.xml`, `sitemap-0.xml`, etc.)
 2. This plugin automatically:
-   - Copies the XSL stylesheet to your public directory
-   - Injects XSL references into all sitemap files
-   - Renames `sitemap-index.xml` to `sitemap.xml` (or custom filename via `sitemapFilename` option) for standard naming
-3. When users visit your sitemap in a browser, they see a styled HTML page
-4. Search engines still see the standard XML structure
+   - Injects XSL references into all sitemap files *(when `xsl: true`)*
+   - Copies the XSL stylesheet to your public directory *(when `xsl: true`)*
+   - Generates a static HTML sitemap page *(when `htmlSitemap: true`)*
+   - Renames `sitemap-index.xml` to `sitemap.xml` (or custom filename via `sitemapFilename` option)
+3. Search engines always see standard XML — XSL processing instructions are ignored by crawlers
+4. Users get a beautiful, styled view — either via XSL in the browser or the dedicated HTML page
 
-## 🎨 Custom Styling
+## 🌐 XSL vs HTML Sitemap
 
-To customize the appearance of your sitemap:
+| | XSL (`xsl: true`) | HTML Sitemap (`htmlSitemap: true`) |
+|---|---|---|
+| Browser support | Chrome deprecating XSLT soon | All browsers, forever |
+| Separate URL needed | No (`/sitemap.xml`) | Yes (`/sitemap`) |
+| XML stays clean | No (XSL PI injected) | Yes |
+| Custom styling | Via custom XSL file | Via `htmlSitemapPath` page |
+| Recommended for | Legacy / existing setups | New projects |
 
-1. Create a custom XSL file (you can copy from `node_modules/gatsby-plugin-sitemap-html/templates/sitemap.xsl`)
+You can enable both at the same time if needed.
+
+## 🎨 Custom XSL Styling
+
+To customize the XSL appearance:
+
+1. Copy the built-in template from `node_modules/gatsby-plugin-sitemap-html/templates/sitemap.xsl`
 2. Modify the styles and layout as needed
 3. Reference it in your config:
 
@@ -162,7 +218,9 @@ pnpm run build
 pnpm run serve
 ```
 
-Then visit `http://localhost:9000/sitemap.xml`
+Then visit:
+- `http://localhost:9000/sitemap.xml` — XSL styled XML sitemap
+- `http://localhost:9000/sitemap` — HTML sitemap page
 
 ## 🤝 Contributing
 

@@ -2,13 +2,32 @@
 
 ## Plugin Options
 
+### `xsl`
+
+- **Type:** `boolean`
+- **Default:** `true`
+- **Optional:** Yes
+
+Inject XSL stylesheet reference into XML sitemaps. Set to `false` for pure XML with no XSL processing instructions.
+
+**Example:**
+
+```js
+{
+  resolve: 'gatsby-plugin-sitemap-html',
+  options: {
+    xsl: false, // pure XML, no XSL injection
+  },
+}
+```
+
 ### `xslTemplate`
 
 - **Type:** `string`
 - **Default:** Built-in template
 - **Optional:** Yes
 
-Path to a custom XSL template file. If not provided, the plugin uses its built-in template.
+Path to a custom XSL template file. Only used when `xsl: true`.
 
 **Example:**
 
@@ -17,6 +36,48 @@ Path to a custom XSL template file. If not provided, the plugin uses its built-i
   resolve: 'gatsby-plugin-sitemap-html',
   options: {
     xslTemplate: './src/templates/custom-sitemap.xsl',
+  },
+}
+```
+
+### `htmlSitemap`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Optional:** Yes
+
+Generate a styled HTML sitemap page at build time. The page uses a pure CSS accordion layout (no JavaScript) — click a sitemap entry to expand and see all its URLs.
+
+This is the recommended approach for new projects as it works in all browsers and is future-proof against Chrome's XSLT deprecation.
+
+**Example:**
+
+```js
+{
+  resolve: 'gatsby-plugin-sitemap-html',
+  options: {
+    xsl: false,
+    htmlSitemap: true,
+  },
+}
+```
+
+### `htmlSitemapPath`
+
+- **Type:** `string`
+- **Default:** `/sitemap`
+- **Optional:** Yes
+
+Path where the HTML sitemap page is generated. Only used when `htmlSitemap: true`.
+
+**Example:**
+
+```js
+{
+  resolve: 'gatsby-plugin-sitemap-html',
+  options: {
+    htmlSitemap: true,
+    htmlSitemapPath: '/sitemap-html',
   },
 }
 ```
@@ -46,6 +107,25 @@ Folder path where sitemaps are stored. Must match the `output` option in `gatsby
 }
 ```
 
+### `sitemapFilename`
+
+- **Type:** `string`
+- **Default:** `sitemap.xml`
+- **Optional:** Yes
+
+Custom filename for the main sitemap index file (renamed from `sitemap-index.xml`).
+
+**Example:**
+
+```js
+{
+  resolve: 'gatsby-plugin-sitemap-html',
+  options: {
+    sitemapFilename: 'custom-sitemap.xml',
+  },
+}
+```
+
 ## Gatsby Hooks
 
 ### `onPostBuild`
@@ -54,10 +134,11 @@ This plugin implements the `onPostBuild` hook to process sitemap files after the
 
 **What it does:**
 
-1. Copies the XSL template to the `public` directory
-2. Scans for sitemap files (`sitemap-index.xml`, `sitemap-0.xml`, etc.)
-3. Injects XSL stylesheet references into each sitemap file
-4. Renames `sitemap-index.xml` to `sitemap.xml`
+1. Scans for sitemap files (`sitemap-index.xml`, `sitemap-0.xml`, etc.)
+2. Injects XSL stylesheet references into each sitemap file *(when `xsl: true`)*
+3. Copies the XSL template to the `public` directory *(when `xsl: true`)*
+4. Generates a static HTML sitemap page *(when `htmlSitemap: true`)*
+5. Renames `sitemap-index.xml` to `sitemap.xml` (or custom `sitemapFilename`)
 
 ## File Processing
 
@@ -70,13 +151,22 @@ The plugin automatically processes:
 
 ### XSL Injection
 
-The plugin injects the following line after the XML declaration:
+When `xsl: true` (default), the plugin injects the following line after the XML declaration:
 
 ```xml
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 ```
 
-This tells browsers to apply the XSL transformation when viewing the sitemap.
+When `xsl: false`, the XML files are left clean with no processing instructions.
+
+### HTML Sitemap Generation
+
+When `htmlSitemap: true`, the plugin:
+
+1. Reads the sitemap index to get all child sitemap entries
+2. Reads each child sitemap to extract all URLs
+3. Generates a static `index.html` at `public/{htmlSitemapPath}/`
+4. The HTML page shows sitemap entries as collapsible accordion sections (pure CSS, no JS)
 
 ## Custom XSL Templates
 
@@ -137,13 +227,13 @@ Your XSL template has access to all standard sitemap fields:
 
 ### Template Not Found
 
-If the plugin cannot find the XSL template, it throws an error:
+If `xsl: true` and the plugin cannot find the XSL template, it throws:
 
 ```
-gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package
+gatsby-plugin-sitemap-html: cannot find sitemap.xsl at <path>
 ```
 
-**Solution:** Ensure the template exists at the specified path or remove the `xslTemplate` option to use the built-in template.
+**Solution:** Ensure the template exists at the specified path, or remove the `xslTemplate` option to use the built-in template. Alternatively, set `xsl: false` to skip XSL entirely.
 
 ### No Sitemap Files
 
@@ -153,4 +243,4 @@ If no sitemap files are found, the plugin completes silently. This can happen if
 - `gatsby-plugin-sitemap` is configured to skip sitemap generation
 - The build failed before sitemap generation
 
-**Solution:** Ensure `gatsby-plugin-sitemap` is properly configured and runs before this plugin.
+**Solution:** Ensure `gatsby-plugin-sitemap` is properly configured and listed before this plugin in `gatsby-config.js`.

@@ -17,7 +17,51 @@ module.exports = {
 };
 ```
 
-### With Custom Options
+### Pure XML + HTML Sitemap Page (Recommended for new projects)
+
+Chrome is deprecating XSLT. Use `xsl: false` with `htmlSitemap: true` for a future-proof setup:
+
+```js
+// gatsby-config.js
+module.exports = {
+  siteMetadata: {
+    siteUrl: 'https://www.example.com',
+  },
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,        // pure XML for search engines
+        htmlSitemap: true, // styled HTML page at /sitemap
+      },
+    },
+  ],
+};
+```
+
+Visit `/sitemap.xml` for raw XML and `/sitemap` for the styled HTML page.
+
+### HTML Sitemap with Custom Path
+
+```js
+// gatsby-config.js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,
+        htmlSitemap: true,
+        htmlSitemapPath: '/sitemap-html',
+      },
+    },
+  ],
+};
+```
+
+### With Custom XSL Template
 
 ```js
 // gatsby-config.js
