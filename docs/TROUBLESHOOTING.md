@@ -10,12 +10,12 @@
 
 1. **Plugin order incorrect**
    - Ensure `gatsby-plugin-sitemap-html` comes **after** `gatsby-plugin-sitemap` in your config
-   
+
    ```js
    plugins: [
-     'gatsby-plugin-sitemap',      // ✅ First
+     'gatsby-plugin-sitemap', // ✅ First
      'gatsby-plugin-sitemap-html', // ✅ Second
-   ]
+   ];
    ```
 
 2. **Build not completed**
@@ -29,6 +29,7 @@
 ### XSL template not found error
 
 **Error message:**
+
 ```
 gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package
 ```
@@ -51,18 +52,20 @@ gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package
 **Possible causes:**
 
 1. **gatsby-plugin-sitemap not installed**
+
    ```bash
    npm install gatsby-plugin-sitemap
    ```
 
 2. **siteUrl not configured**
+
    ```js
    // gatsby-config.js
    module.exports = {
      siteMetadata: {
        siteUrl: 'https://www.example.com', // Required!
      },
-   }
+   };
    ```
 
 3. **No pages to include**
@@ -91,6 +94,7 @@ gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package
 **Solutions:**
 
 1. **Check template path**
+
    ```js
    {
      resolve: 'gatsby-plugin-sitemap-html',
@@ -110,6 +114,42 @@ gatsby-plugin-sitemap-html: cannot find sitemap.xsl in package
    gatsby build
    ```
 
+### HTML sitemap page not generated
+
+**Symptoms:** Visiting `/sitemap` shows 404 or the HTML page doesn't exist.
+
+**Possible causes:**
+
+1. **`htmlSitemap` not enabled**
+   - Make sure `htmlSitemap: true` or `htmlSitemap: { enabled: true }` is set
+   - Default is `false`, so it won't generate unless explicitly enabled
+
+2. **Wrong path**
+   - Check `htmlSitemapPath` or `htmlSitemap.path` matches the URL you're visiting
+   - Default path is `/sitemap`
+
+3. **Object shape not recognized**
+   - If using `htmlSitemap: { enabled: true, path: '/custom' }`, ensure `enabled` is not `false`
+   - Boolean `htmlSitemap: true` still works but is deprecated in favor of object shape
+
+### XSL styling broken with custom output path
+
+**Symptoms:** XSL stylesheet not found when using `output: '/sitemaps'` or similar.
+
+**Cause:** Fixed in v1.3.1 — the XSL `href` now respects the `output` option.
+
+**Solution:** Upgrade to `gatsby-plugin-sitemap-html@1.3.1` or later.
+
+### Chrome XSLT deprecation warning
+
+**Symptoms:** Chrome shows a red warning banner: "This site uses XSLT; that functionality is being removed from this browser very soon."
+
+**Solution:** This is expected — Chrome is deprecating XSLT. Use one of these approaches:
+
+1. **Recommended:** Set `xsl: false` and `htmlSitemap: { enabled: true }` for a pure HTML sitemap page
+2. **Keep XSL:** XSL still works in Firefox and Safari, but will eventually stop working in Chrome
+3. **Both:** Enable both `xsl: true` and `htmlSitemap: true` — crawlers get clean XML, browsers get either XSL or HTML
+
 ## Package Manager Specific Issues
 
 ### pnpm
@@ -122,6 +162,7 @@ pnpm install gatsby-plugin-sitemap-html --shamefully-hoist
 ```
 
 Or add to `.npmrc`:
+
 ```
 shamefully-hoist=true
 ```

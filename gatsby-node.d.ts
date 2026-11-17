@@ -23,13 +23,25 @@ export interface PluginOptions {
 
   /**
    * Generate a styled HTML sitemap page.
+   * Accepts a boolean or an object with `enabled` and `path` properties.
    * The HTML page uses a pure CSS accordion layout (no JavaScript).
    * @default false
+   * @example
+   * ```js
+   * {
+   *   htmlSitemap: true
+   * }
+   * // or
+   * {
+   *   htmlSitemap: { enabled: true, path: '/sitemap-html' }
+   * }
+   * ```
    */
-  htmlSitemap?: boolean;
+  htmlSitemap?: boolean | { enabled?: boolean; path?: string };
 
   /**
    * Path where the HTML sitemap page is generated.
+   * @deprecated Use `htmlSitemap.path` instead. Still works for backward compatibility.
    * Only used when `htmlSitemap: true`.
    * @default '/sitemap'
    * @example
@@ -85,9 +97,8 @@ export interface PluginOptions {
  *     {
  *       resolve: 'gatsby-plugin-sitemap-html',
  *       options: {
- *         xsl: true,                    // default: inject XSL for browser styling
- *         htmlSitemap: true,            // generate HTML page at /sitemap
- *         htmlSitemapPath: '/sitemap',  // default path
+ *         xsl: false,                              // pure XML for search engines
+ *         htmlSitemap: { enabled: true, path: '/sitemap' },  // HTML page at /sitemap
  *       },
  *     },
  *   ],

@@ -10,16 +10,15 @@ module.exports = {
   siteMetadata: {
     siteUrl: 'https://www.example.com',
   },
-  plugins: [
-    'gatsby-plugin-sitemap',
-    'gatsby-plugin-sitemap-html',
-  ],
+  plugins: ['gatsby-plugin-sitemap', 'gatsby-plugin-sitemap-html'],
 };
 ```
 
 ### Pure XML + HTML Sitemap Page (Recommended for new projects)
 
-Chrome is deprecating XSLT. Use `xsl: false` with `htmlSitemap: true` for a future-proof setup:
+Chrome is deprecating XSLT. Use `xsl: false` with `htmlSitemap` for a future-proof setup:
+
+**Object shape (recommended):**
 
 ```js
 // gatsby-config.js
@@ -32,7 +31,28 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-sitemap-html',
       options: {
-        xsl: false,        // pure XML for search engines
+        xsl: false, // pure XML for search engines
+        htmlSitemap: { enabled: true }, // styled HTML page at /sitemap
+      },
+    },
+  ],
+};
+```
+
+**Boolean shape (still works, deprecated):**
+
+```js
+// gatsby-config.js
+module.exports = {
+  siteMetadata: {
+    siteUrl: 'https://www.example.com',
+  },
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false, // pure XML for search engines
         htmlSitemap: true, // styled HTML page at /sitemap
       },
     },
@@ -42,7 +62,25 @@ module.exports = {
 
 Visit `/sitemap.xml` for raw XML and `/sitemap` for the styled HTML page.
 
-### HTML Sitemap with Custom Path
+### HTML Sitemap with Custom Path (Object Shape)
+
+```js
+// gatsby-config.js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,
+        htmlSitemap: { enabled: true, path: '/sitemap-html' },
+      },
+    },
+  ],
+};
+```
+
+### HTML Sitemap with Custom Path (Deprecated Boolean Shape)
 
 ```js
 // gatsby-config.js
@@ -54,7 +92,7 @@ module.exports = {
       options: {
         xsl: false,
         htmlSitemap: true,
-        htmlSitemapPath: '/sitemap-html',
+        htmlSitemapPath: '/sitemap-html', // deprecated, use htmlSitemap.path instead
       },
     },
   ],
@@ -206,11 +244,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-sitemap',
       options: {
-        excludes: [
-          '/checkout/*',
-          '/cart',
-          '/account/*',
-        ],
+        excludes: ['/checkout/*', '/cart', '/account/*'],
         query: `
           {
             allSitePage {

@@ -44,10 +44,7 @@ module.exports = {
   siteMetadata: {
     siteUrl: 'https://www.example.com',
   },
-  plugins: [
-    'gatsby-plugin-sitemap',
-    'gatsby-plugin-sitemap-html',
-  ],
+  plugins: ['gatsby-plugin-sitemap', 'gatsby-plugin-sitemap-html'],
 };
 ```
 
@@ -83,8 +80,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-sitemap-html',
       options: {
-        xsl: false,          // pure XML for search engines
-        htmlSitemap: true,   // generate HTML page at /sitemap
+        xsl: false, // pure XML for search engines
+        htmlSitemap: { enabled: true }, // HTML page at /sitemap (default path)
       },
     },
   ],
@@ -93,7 +90,26 @@ module.exports = {
 
 Visit `/sitemap.xml` for the raw XML and `/sitemap` for the styled HTML page.
 
-### HTML Sitemap with Custom Path
+### HTML Sitemap with Custom Path (Object Shape)
+
+```js
+module.exports = {
+  plugins: [
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap-html',
+      options: {
+        xsl: false,
+        htmlSitemap: { enabled: true, path: '/sitemap-html' },
+      },
+    },
+  ],
+};
+```
+
+### HTML Sitemap with Custom Path (Deprecated Boolean Shape)
+
+The boolean `htmlSitemap: true` with separate `htmlSitemapPath` still works but is deprecated:
 
 ```js
 module.exports = {
@@ -104,7 +120,7 @@ module.exports = {
       options: {
         xsl: false,
         htmlSitemap: true,
-        htmlSitemapPath: '/sitemap-html',
+        htmlSitemapPath: '/sitemap-html', // deprecated, use htmlSitemap.path instead
       },
     },
   ],
@@ -150,35 +166,35 @@ module.exports = {
 
 ### Options
 
-| Option          | Type    | Default           | Description                                                                 |
-| --------------- | ------- | ----------------- | --------------------------------------------------------------------------- |
-| xsl             | boolean | `true`            | Inject XSL stylesheet reference into XML sitemaps. Set `false` for pure XML |
-| xslTemplate     | string  | built-in template | Path to a custom XSL template file. Only used when `xsl: true`             |
-| htmlSitemap     | boolean | `false`           | Generate a styled HTML sitemap page (no XSL, works in all browsers)        |
-| htmlSitemapPath | string  | `/sitemap`        | Path where the HTML sitemap page is generated. Only used when `htmlSitemap: true` |
-| output          | string  | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)   |
-| sitemapFilename | string  | `sitemap.xml`     | Custom filename for the main sitemap file (renamed from sitemap-index.xml) |
+| Option          | Type                | Default           | Description                                                                             |
+| --------------- | ------------------- | ----------------- | --------------------------------------------------------------------------------------- |
+| xsl             | boolean             | `true`            | Inject XSL stylesheet reference into XML sitemaps. Set `false` for pure XML             |
+| xslTemplate     | string              | built-in template | Path to a custom XSL template file. Only used when `xsl: true`                          |
+| htmlSitemap     | boolean \| object   | `false`           | Generate a styled HTML sitemap page. Use `true` or `{ enabled: true, path: '/custom' }` |
+| htmlSitemapPath | string (deprecated) | `/sitemap`        | Path where the HTML sitemap page is generated. Use `htmlSitemap.path` instead           |
+| output          | string              | `/`               | Folder path where sitemaps are stored (must match gatsby-plugin-sitemap)                |
+| sitemapFilename | string              | `sitemap.xml`     | Custom filename for the main sitemap file (renamed from sitemap-index.xml)              |
 
 ## 📖 How It Works
 
 1. `gatsby-plugin-sitemap` generates your sitemap files (`sitemap-index.xml`, `sitemap-0.xml`, etc.)
 2. This plugin automatically:
-   - Injects XSL references into all sitemap files *(when `xsl: true`)*
-   - Copies the XSL stylesheet to your public directory *(when `xsl: true`)*
-   - Generates a static HTML sitemap page *(when `htmlSitemap: true`)*
+   - Injects XSL references into all sitemap files _(when `xsl: true`)_
+   - Copies the XSL stylesheet to your public directory _(when `xsl: true`)_
+   - Generates a static HTML sitemap page _(when `htmlSitemap: true`)_
    - Renames `sitemap-index.xml` to `sitemap.xml` (or custom filename via `sitemapFilename` option)
 3. Search engines always see standard XML — XSL processing instructions are ignored by crawlers
 4. Users get a beautiful, styled view — either via XSL in the browser or the dedicated HTML page
 
 ## 🌐 XSL vs HTML Sitemap
 
-| | XSL (`xsl: true`) | HTML Sitemap (`htmlSitemap: true`) |
-|---|---|---|
-| Browser support | Chrome deprecating XSLT soon | All browsers, forever |
-| Separate URL needed | No (`/sitemap.xml`) | Yes (`/sitemap`) |
-| XML stays clean | No (XSL PI injected) | Yes |
-| Custom styling | Via custom XSL file | Via `htmlSitemapPath` page |
-| Recommended for | Legacy / existing setups | New projects |
+|                     | XSL (`xsl: true`)            | HTML Sitemap (`htmlSitemap: true`) |
+| ------------------- | ---------------------------- | ---------------------------------- |
+| Browser support     | Chrome deprecating XSLT soon | All browsers, forever              |
+| Separate URL needed | No (`/sitemap.xml`)          | Yes (`/sitemap`)                   |
+| XML stays clean     | No (XSL PI injected)         | Yes                                |
+| Custom styling      | Via custom XSL file          | Via `htmlSitemapPath` page         |
+| Recommended for     | Legacy / existing setups     | New projects                       |
 
 You can enable both at the same time if needed.
 
@@ -219,6 +235,7 @@ pnpm run serve
 ```
 
 Then visit:
+
 - `http://localhost:9000/sitemap.xml` — XSL styled XML sitemap
 - `http://localhost:9000/sitemap` — HTML sitemap page
 

@@ -42,15 +42,21 @@ Path to a custom XSL template file. Only used when `xsl: true`.
 
 ### `htmlSitemap`
 
-- **Type:** `boolean`
+- **Type:** `boolean | { enabled?: boolean; path?: string }`
 - **Default:** `false`
 - **Optional:** Yes
 
 Generate a styled HTML sitemap page at build time. The page uses a pure CSS accordion layout (no JavaScript) — click a sitemap entry to expand and see all its URLs.
 
+Accepts either a boolean or an object:
+
+- `htmlSitemap: true` — enabled with default path `/sitemap`
+- `htmlSitemap: { enabled: true, path: '/custom' }` — enabled with custom path
+- `htmlSitemap: false` — disabled
+
 This is the recommended approach for new projects as it works in all browsers and is future-proof against Chrome's XSLT deprecation.
 
-**Example:**
+**Example (boolean):**
 
 ```js
 {
@@ -62,11 +68,24 @@ This is the recommended approach for new projects as it works in all browsers an
 }
 ```
 
+**Example (object):**
+
+```js
+{
+  resolve: 'gatsby-plugin-sitemap-html',
+  options: {
+    xsl: false,
+    htmlSitemap: { enabled: true, path: '/sitemap-html' },
+  },
+}
+```
+
 ### `htmlSitemapPath`
 
 - **Type:** `string`
 - **Default:** `/sitemap`
 - **Optional:** Yes
+- **Deprecated:** Use `htmlSitemap.path` instead. Still works for backward compatibility.
 
 Path where the HTML sitemap page is generated. Only used when `htmlSitemap: true`.
 
@@ -77,7 +96,7 @@ Path where the HTML sitemap page is generated. Only used when `htmlSitemap: true
   resolve: 'gatsby-plugin-sitemap-html',
   options: {
     htmlSitemap: true,
-    htmlSitemapPath: '/sitemap-html',
+    htmlSitemapPath: '/sitemap-html', // deprecated, use htmlSitemap.path instead
   },
 }
 ```
@@ -135,9 +154,9 @@ This plugin implements the `onPostBuild` hook to process sitemap files after the
 **What it does:**
 
 1. Scans for sitemap files (`sitemap-index.xml`, `sitemap-0.xml`, etc.)
-2. Injects XSL stylesheet references into each sitemap file *(when `xsl: true`)*
-3. Copies the XSL template to the `public` directory *(when `xsl: true`)*
-4. Generates a static HTML sitemap page *(when `htmlSitemap: true`)*
+2. Injects XSL stylesheet references into each sitemap file _(when `xsl: true`)_
+3. Copies the XSL template to the `public` directory _(when `xsl: true`)_
+4. Generates a static HTML sitemap page _(when `htmlSitemap: true`)_
 5. Renames `sitemap-index.xml` to `sitemap.xml` (or custom `sitemapFilename`)
 
 ## File Processing
@@ -151,10 +170,16 @@ The plugin automatically processes:
 
 ### XSL Injection
 
-When `xsl: true` (default), the plugin injects the following line after the XML declaration:
+When `xsl: true` (default), the plugin injects an XSL stylesheet reference after the XML declaration. The `href` respects your `output` option:
 
 ```xml
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+```
+
+If you set `output: '/sitemaps'`, the href becomes:
+
+```xml
+<?xml-stylesheet type="text/xsl" href="/sitemaps/sitemap.xsl"?>
 ```
 
 When `xsl: false`, the XML files are left clean with no processing instructions.
@@ -185,7 +210,7 @@ A custom XSL template should:
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
+
   <xsl:template match="/">
     <html>
       <head>
@@ -197,7 +222,7 @@ A custom XSL template should:
       </body>
     </html>
   </xsl:template>
-  
+
   <xsl:template match="sitemap:url">
     <div>
       <a href="{sitemap:loc}">
@@ -205,7 +230,7 @@ A custom XSL template should:
       </a>
     </div>
   </xsl:template>
-  
+
 </xsl:stylesheet>
 ```
 
@@ -214,12 +239,14 @@ A custom XSL template should:
 Your XSL template has access to all standard sitemap fields:
 
 **For URL entries:**
+
 - `loc` - The URL
 - `lastmod` - Last modification date
 - `changefreq` - Change frequency
 - `priority` - Priority value
 
 **For sitemap index entries:**
+
 - `loc` - The sitemap URL
 - `lastmod` - Last modification date
 

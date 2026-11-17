@@ -7,8 +7,12 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-const XSL_STYLESHEET = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
 const XML_DECLARATION = '<?xml version="1.0" encoding="UTF-8"?>';
+
+function getXslStylesheet(output) {
+  const xslHref = output.endsWith('/') ? `${output}sitemap.xsl` : `${output}/sitemap.xsl`;
+  return `<?xml-stylesheet type="text/xsl" href="${xslHref}"?>`;
+}
 
 function formatDate(isoString) {
   if (!isoString) return 'N/A';
@@ -35,7 +39,7 @@ function parseXmlEntries(content, tag) {
   return entries;
 }
 
-function generateHtmlSitemap(indexEntries, childSitemaps, sitemapFilename) {
+function generateHtmlSitemap(indexEntries, childSitemaps, sitemapFilename, output) {
   const CSS = `
     *,*::before,*::after{box-sizing:border-box}
     body{font-family:sans-serif;font-size:16px;color:#242628;margin:0}
@@ -116,7 +120,7 @@ function generateHtmlSitemap(indexEntries, childSitemaps, sitemapFilename) {
 <body>
   <div id="content">
     <h1>XML Sitemap</h1>
-    <p class="meta">${indexEntries.length} sitemap(s) &mdash; <a href="/${sitemapFilename}">${sitemapFilename}</a></p>
+    <p class="meta">${indexEntries.length} sitemap(s) &mdash; <a href="${output.endsWith('/') ? output : output + '/'}${sitemapFilename}">${sitemapFilename}</a></p>
     ${groupsHtml}
   </div>
 </body>
@@ -131,8 +135,19 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
     : path.join('public', output);
 
   const xsl = pluginOptions.xsl !== false;
-  const htmlSitemap = pluginOptions.htmlSitemap === true;
-  const htmlSitemapPath = pluginOptions.htmlSitemapPath || '/sitemap';
+
+  // Support both boolean and object shapes for htmlSitemap
+  // htmlSitemap: true  -> enabled with default path '/sitemap'
+  // htmlSitemap: { enabled: true, path: '/custom' } -> enabled with custom path
+  // htmlSitemapPath (deprecated) -> still works as fallback
+  const htmlSitemapRaw = pluginOptions.htmlSitemap;
+  const htmlSitemapEnabled =
+    htmlSitemapRaw === true ||
+    (htmlSitemapRaw && typeof htmlSitemapRaw === 'object' && htmlSitemapRaw.enabled !== false);
+  const htmlSitemapPath =
+    (htmlSitemapRaw && typeof htmlSitemapRaw === 'object' && htmlSitemapRaw.path) ||
+    pluginOptions.htmlSitemapPath ||
+    '/sitemap';
   const sitemapFilename = pluginOptions.sitemapFilename || 'sitemap.xml';
 
   // Handle XSL
@@ -165,7 +180,7 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
     if (xsl && !content.includes('<?xml-stylesheet')) {
       content = content.replace(
         XML_DECLARATION,
-        `${XML_DECLARATION}\n${XSL_STYLESHEET}`
+        `${XML_DECLARATION}\n${getXslStylesheet(output)}`
       );
     }
 
@@ -201,7 +216,7 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
   }
 
   // Generate HTML sitemap
-  if (htmlSitemap && indexContent) {
+  if (htmlSitemapEnabled && indexContent) {
     const indexEntries = parseXmlEntries(indexContent, 'sitemap');
 
     // Build map of loc -> parsed URL entries
@@ -214,7 +229,7 @@ exports.onPostBuild = async ({ store }, pluginOptions) => {
       }
     }
 
-    const html = generateHtmlSitemap(indexEntries, childSitemaps, sitemapFilename);
+    const html = generateHtmlSitemap(indexEntries, childSitemaps, sitemapFilename, output);
     const rootDir = program.directory
       ? path.join(program.directory, 'public')
       : 'public';

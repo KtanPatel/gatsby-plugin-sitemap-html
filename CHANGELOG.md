@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-11-17
+
+### Fixed
+
+- XSL stylesheet `href` now respects the `output` option (was hardcoded to `/sitemap.xsl`, breaking XSL styling for custom output paths)
+- HTML sitemap link now respects the `output` option
+
+### Changed
+
+- `htmlSitemap` now accepts both boolean and object shapes:
+  - `htmlSitemap: true` (boolean, still works)
+  - `htmlSitemap: { enabled: true, path: '/custom' }` (object, recommended)
+- `htmlSitemapPath` is deprecated in favor of `htmlSitemap.path` (still works for backward compatibility)
+
 ## [1.3.0] - 2025-11-08
 
 ### Added
